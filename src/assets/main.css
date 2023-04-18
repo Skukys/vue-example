@@ -558,13 +558,14 @@ body{
 .card{
   max-width: 1070px;
   overflow: hidden;
+  cursor: pointer;
   margin: 40px auto;
   position: relative;
   border-radius: 30px;
   box-shadow: 0 0 20px #d0d0d0;
 }
 .card.active{
-  opacity: .7;
+  border: 3px solid #56f564;
 }
 .card-price{
   position: absolute;
