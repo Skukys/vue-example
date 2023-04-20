@@ -4,78 +4,41 @@
       <h1 class="title">Результат поиска</h1>
       <div class="title-bd"></div>
     </div>
-<!--    v-bind-->
-<!--    v-for-->
-
+    <!--    v-bind-->
+    <!--    v-for-->
     <div class="search__content flex column">
       <router-link to="/" class="go-back" style="text-align:left; font-size: 24px;">Назад</router-link>
       <div class="search__content-title">Москва - Токио</div>
-      <div :class="['card', 'flex', element.selected ? 'active' : '']" v-for="(element, id) in to" @click="select(id)">
-        <div class="card-image"><img :src="element.imgFrom" alt="city"></div>
-        <div class="card__content">
-          <div class="card__content-top flex">
-            <p>{{element.code}}</p>
-            <p>{{element.airplane}}</p>
-          </div>
-          <div class="card__content-date">
-            {{element.date}}
-          </div>
-          <div class="card__content-data flex">
-            <div class="card-ot">
-              <div class="card-ot__time">{{element.timeFrom}}</div>
-            </div>
-            <div class="card-bd">
-              В пути {{element.timeFly}}
-            </div>
-            <div class="card-pr">
-              <div class="card-pr__time">
-                {{element.timeArrival}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-image"><img v-bind:src="to[0].imgArrival" alt="city"></div>
-        <div class="card-price">{{element.cost}} ₽</div>
-      </div>
-
+      <Card
+          v-for="(element, id) in to"
+          :item="element"
+          :back="true"
+          :id="id"
+          @updateSelect="select"
+      ></Card>
       <div class="search__content-title">Токио - Москва</div>
-      <div :class="['card', 'flex', element.selected ? 'active' : '']" @click="select(id, false)" v-for="(element, id) in back">
-        <div class="card-image"><img :src="element.imgFrom" alt="city"></div>
-        <div class="card__content">
-          <div class="card__content-top flex">
-            <p>{{element.code}}</p>
-            <p>{{element.airplane}}</p>
-          </div>
-          <div class="card__content-date">
-            {{element.date}}
-          </div>
-          <div class="card__content-data flex">
-            <div class="card-ot">
-              <div class="card-ot__time">{{element.timeFrom}}</div>
-            </div>
-            <div class="card-bd">
-              В пути {{element.timeFly}}
-            </div>
-            <div class="card-pr">
-              <div class="card-pr__time">
-                {{element.timeArrival}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-image"><img v-bind:src="to[0].imgArrival" alt="city"></div>
-        <div class="card-price">{{element.cost}} ₽</div>
-      </div>
+      <Card
+          v-for="(element, id) in back"
+          :item="element"
+          :back="false"
+          :id="id"
+          @updateSelect="select"
+      >
 
+      </Card>
+      <p>Общая стоимость: {{totalCost}} ₽</p>
       <button class="search__button btn" @click="booking">Бронирование</button>
     </div>
   </div>
 </template>
 
 <script>
+// data, computed, methods, mounted
+import Card from "@/components/Card.vue"
+
 export default {
   name: "Search",
-  data(){
+  data() {
     return {
       test: 'Hello',
       to: [
@@ -86,7 +49,7 @@ export default {
           timeFrom: '12:00',
           timeFly: '03:00',
           timeArrival: '18:00',
-          cost: 12000,
+          cost: 14242,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg',
           selected: false,
@@ -98,7 +61,7 @@ export default {
           timeFrom: '14:00',
           timeFly: '05:00',
           timeArrival: '18:00',
-          cost: 12000,
+          cost: 5233,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg',
           selected: false,
@@ -110,7 +73,7 @@ export default {
           timeFrom: '13:00',
           timeFly: '04:00',
           timeArrival: '19:00',
-          cost: 12000,
+          cost: 2424,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg',
           selected: false,
@@ -124,7 +87,7 @@ export default {
           timeFrom: '12:00',
           timeFly: '03:00',
           timeArrival: '18:00',
-          cost: 12000,
+          cost: 4244,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg',
           selected: false,
@@ -137,7 +100,7 @@ export default {
           timeFly: '05:00',
           selected: false,
           timeArrival: '18:00',
-          cost: 12000,
+          cost: 63344,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg'
         },
@@ -149,7 +112,7 @@ export default {
           timeFly: '04:00',
           selected: false,
           timeArrival: '19:00',
-          cost: 12000,
+          cost: 42422,
           imgFrom: 'https://kudamoscow.ru/uploads/1c239f459c5805a1b525cf0fddd564ba.jpg',
           imgArrival: 'https://fregataero.ru/images/tokio-4.jpeg'
         },
@@ -158,10 +121,18 @@ export default {
       selectedBack: null,
     }
   },
+  components: {Card},
+  computed: {
+    totalCost(){
+      return (this.selectedTo ? this.selectedTo.cost : 0) + (this.selectedBack ? this.selectedBack.cost : 0)
+    }
+  },
   methods: {
-    select(id, to = true){
-
-      if(to) {
+    sayHello(){
+      console.log('Hello')
+    },
+    select(id, to = true) {
+      if (to) {
         this.to.forEach(item => item.selected = false)
         this.to[id].selected = true
         this.selectedTo = this.to[id]
@@ -171,14 +142,16 @@ export default {
         this.selectedBack = this.back[id]
       }
     },
-    booking(){
+    booking() {
       console.log(this.selectedTo)
       console.log(this.selectedBack)
 
-      if(this.selectedTo && this.selectedBack)
+      if (this.selectedTo && this.selectedBack)
         this.$router.push('/booking')
-
     }
+  },
+  mounted(){
+    this.sayHello()
   }
 }
 </script>
