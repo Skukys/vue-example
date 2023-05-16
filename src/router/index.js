@@ -7,6 +7,9 @@ import Booking from "@/views/Booking.vue"
 import BookingControll from "@/views/BookingControll.vue"
 import Search from "@/views/Search.vue"
 import Seat from "@/views/Seat.vue"
+import createAirport from "@/views/createAirport.vue"
+import createFlight from "@/views/createFlight.vue"
+import singleFlight from "@/views/singleFlight.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +53,21 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: Search
+    },
+    {
+      path: '/create/airport',
+      name: 'create-airport',
+      component: createAirport
+    },
+    {
+      path: '/create/flight',
+      name: 'create-flight',
+      component: createFlight
+    },
+    {
+      path: '/flight/:id/',
+      name: 'single-flight',
+      component: singleFlight
     },
   ]
 })

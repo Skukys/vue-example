@@ -12,8 +12,8 @@
           </div>
         </div>
         <div class="personal-card-right">
-          <p>Имя: Имя</p>
-          <p>Фамилия: Фамилия</p>
+          <p>Имя: {{userData.name}}</p>
+          <p>Фамилия: {{userData.surname}}</p>
           <p>Полётов: 12</p>
           <router-link to="/" style="text-align:center;" class="personal-card__btn btn">Выход</router-link>
         </div>
@@ -55,7 +55,20 @@
 
 <script>
 export default {
-  name: "Personal"
+  name: "Personal",
+  data(){
+    return {
+      userData: {}
+    }
+  },
+  methods: {
+    async get() {
+
+    }
+  },
+  mounted() {
+    this.userData = JSON.parse(localStorage.user)
+  }
 }
 </script>
 

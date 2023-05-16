@@ -10,23 +10,13 @@
       <router-link to="/" class="go-back" style="text-align:left; font-size: 24px;">Назад</router-link>
       <div class="search__content-title">Москва - Токио</div>
       <Card
-          v-for="(element, id) in to"
+          v-for="(element, id) in flightStore.searchFlights"
           :item="element"
           :back="true"
           :id="id"
-          @updateSelect="select"
+          @click="route(element.id)"
       ></Card>
-      <div class="search__content-title">Токио - Москва</div>
-      <Card
-          v-for="(element, id) in back"
-          :item="element"
-          :back="false"
-          :id="id"
-          @updateSelect="select"
-      >
-
-      </Card>
-      <p>Общая стоимость: {{totalCost}} ₽</p>
+<!--      <p>Общая стоимость: {{totalCost}} ₽</p>-->
       <button class="search__button btn" @click="booking">Бронирование</button>
     </div>
   </div>
@@ -35,12 +25,14 @@
 <script>
 // data, computed, methods, mounted
 import Card from "@/components/Card.vue"
+import {useFlightStore} from "@/store/flightStore";
 
 export default {
   name: "Search",
+  props: {},
   data() {
     return {
-      test: 'Hello',
+      flightStore: useFlightStore(),
       to: [
         {
           code: '52F51D',
@@ -123,35 +115,18 @@ export default {
   },
   components: {Card},
   computed: {
-    totalCost(){
-      return (this.selectedTo ? this.selectedTo.cost : 0) + (this.selectedBack ? this.selectedBack.cost : 0)
-    }
   },
   methods: {
-    sayHello(){
-      console.log('Hello')
-    },
-    select(id, to = true) {
-      if (to) {
-        this.to.forEach(item => item.selected = false)
-        this.to[id].selected = true
-        this.selectedTo = this.to[id]
-      } else {
-        this.back.forEach(item => item.selected = false)
-        this.back[id].selected = true
-        this.selectedBack = this.back[id]
-      }
+    route(id){
+      this.$router.push({name: 'single-flight', params: {id: id}})
     },
     booking() {
-      console.log(this.selectedTo)
-      console.log(this.selectedBack)
-
       if (this.selectedTo && this.selectedBack)
         this.$router.push('/booking')
     }
   },
   mounted(){
-    this.sayHello()
+    console.log(this.flightStore.searchFlights)
   }
 }
 </script>

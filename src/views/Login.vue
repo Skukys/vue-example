@@ -13,9 +13,9 @@
             <h2 class="title">Вход</h2>
             <div class="title-bd-register"></div>
           </div>
-          <input type="text" class="base-input" placeholder="Телефон">
-          <input type="text" class="base-input" placeholder="Пароль">
-          <router-link to="/personal" style="text-align: center" class="form-register__btn btn">Вход</router-link>
+          <input type="text" v-model="formData.phone" class="base-input" placeholder="Телефон">
+          <input type="text" v-model="formData.password" class="base-input" placeholder="Пароль">
+          <button @click="login" style="text-align: center" class="form-register__btn btn">Вход</button>
           <div class="form-register__buttons" style="display: flex; justify-content: space-around">
             <router-link to="/" class="go-back" style="text-align:left; font-size: 20px;">На главную</router-link>
             <router-link to="/register" class="go-back" style="text-align:left; font-size: 20px;">Регистрация</router-link>
@@ -28,7 +28,30 @@
 
 <script>
 export default {
-  name: "Login"
+  name: "Login",
+  data(){
+    return {
+      formData: {
+        phone: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    async login(){
+      let res = await fetch('http://flights/routes/login.php', {
+        method: 'POST',
+        body: JSON.stringify(this.formData)
+      })
+
+      let json = await res.json()
+
+      if(res.ok) {
+        localStorage.setItem('user', JSON.stringify(json.userData))
+        this.$router.push('/personal')
+      }
+    }
+  }
 }
 </script>
 

@@ -1019,7 +1019,6 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-direction: column;
 }
 .personal-booking{
   font-size: 20px;
@@ -1037,3 +1036,30 @@ body{
   font-size: 20px;
 }
 /*Personal End*/
+
+.input-create{
+  width: 400px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 20px #efefef;
+  border: 1px solid #456cc3;
+  margin-bottom: 24px;
+  outline: none;
+}
+
+.button-create{
+  background: #456cc3;
+  cursor: pointer;
+  width: 400px;
+  padding: 10px;
+  font-size: 24px;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  transition: .3s;
+}
+
+.button-create:hover{
+  background: #638fee;
+}

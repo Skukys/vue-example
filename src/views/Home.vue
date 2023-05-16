@@ -9,11 +9,17 @@
           <div class="main__title-bd"></div>
         </div>
         <form action="#" class="main__form form">
-          <input type="text" class="base-input" placeholder="Откуда...">
-          <input type="text" class="base-input" placeholder="Куда...">
+          Airport from
+          <select class="input-create" v-model.number="formData.airport_from">
+            <option :value="element.id" v-for="element in airports">{{ element.city }}</option>
+          </select>
+          Airport to
+          <select class="input-create" v-model.number="formData.airport_to">
+            <option :value="element.id" v-for="element in airports">{{ element.city }}</option>
+          </select>
           <label class="label-date">
             Туда
-            <input type="date">
+            <input v-model="formData.date" type="date">
           </label>
           <label class="label-date">
             Обратно
@@ -27,7 +33,7 @@
               <div class="form-passenger__count-plus">-</div>
             </div>
           </div>
-          <router-link to="/search" class="form-btn btn">Найти билеты</router-link>
+          <div class="form-btn btn" @click="search">Найти билеты</div>
         </form>
       </div>
     </div>
@@ -144,15 +150,39 @@
 <script>
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
+import {useFlightStore} from "@/store/flightStore";
 
 export default {
   data(){
-    return {}
+    return {
+      airports: [],
+      flightStore: useFlightStore(),
+      formData: {
+        airport_from: null,
+        airport_to: null,
+        date: null
+      }
+    }
   },
   components: {
     Header, Footer
   },
-  methods: {},
+  methods: {
+    async search(){
+      let res = await fetch('http://flights/routes/getFlight.php', {method: 'POST', body: JSON.stringify(this.formData)})
+      let json = await res.json()
+      if(res.ok) {
+        this.flightStore.searchFlights = json.data
+        this.$router.push('/search')
+      }
+
+    }
+  },
+  async mounted() {
+    let res = await fetch('http://flights/routes/getAirport.php', {method: 'GET'})
+    let json = await res.json()
+    this.airports = json.data
+  }
 }
 
 </script>
